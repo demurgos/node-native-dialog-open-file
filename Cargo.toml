@@ -1,0 +1,17 @@
+[package]
+name = "node-native-dialog-open-file"
+version = "0.0.1"
+authors = ["Charles Samborski <demurgos@demurgos.net>"]
+license = "MIT"
+build = "build.rs"
+
+[lib]
+path = "./src/lib/native"
+name = "node_native_dialog_open_file"
+crate-type = ["dylib"]
+
+[build-dependencies]
+neon-build = "^0.1.22"
+
+[dependencies]
+neon = "^0.1.22"

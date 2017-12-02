@@ -1,0 +1,48 @@
+{
+  "name": "native-dialog-open-file",
+  "version": "0.0.1",
+  "description": "Native \"Open File\" dialog",
+  "private": true,
+  "main": "dist/lib/index.js",
+  "types": "dist/lib/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/demurgos/node-native-dialog-open-file"
+  },
+  "scripts": {
+    "build": "neon build",
+    "prepare": "gulp tsconfig.json && gulp :tslint.json && gulp lib:dist",
+    "test": "gulp :lint && gulp test",
+    "prepublishOnly": "npm test",
+    "lint": "gulp :lint:fix"
+  },
+  "nyc": {
+    "include": [
+      "build/test/lib/**/*.js"
+    ]
+  },
+  "keywords": [
+    "error"
+  ],
+  "pre-commit": {
+    "run": [
+      "test"
+    ]
+  },
+  "author": "Charles Samborski <demurgos@demurgos.net> (https://demurgos.net)",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/chai": "^4.0.4",
+    "@types/mocha": "^2.2.41",
+    "chai": "^4.1.2",
+    "codecov": "^3.0.0",
+    "gulp": "github:gulpjs/gulp#4.0",
+    "gulp-cli": "^1.4.0",
+    "minimist": "^1.2.0",
+    "neon-cli": "^0.1.22",
+    "pre-commit": "^1.2.2",
+    "ts-node": "^3.3.0",
+    "turbo-gulp": "^0.15.7",
+    "typescript": "^2.6.1"
+  }
+}
