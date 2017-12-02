@@ -1,4 +1,4 @@
-import * as native from "./native/index";
+import * as native from "../native/index";
 
 export interface OpenFileOptions {
   defaultDir?: string;

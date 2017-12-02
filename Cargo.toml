@@ -6,7 +6,7 @@ license = "MIT"
 build = "build.rs"
 
 [lib]
-path = "./src/lib/native"
+path = "./src/native/lib.rs"
 name = "node_native_dialog_open_file"
 crate-type = ["dylib"]
 

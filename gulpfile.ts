@@ -1,8 +1,9 @@
-import * as buildTools from "turbo-gulp";
-
 import * as gulp from "gulp";
 import * as minimist from "minimist";
 import { ParsedArgs } from "minimist";
+import NeonCrate from "neon-cli/lib/crate";
+import NeonProject from "neon-cli/lib/project";
+import * as buildTools from "turbo-gulp";
 
 interface Options {
   devDist?: string;
@@ -20,6 +21,13 @@ const project: buildTools.Project = {
   buildDir: "build",
   distDir: "dist",
   srcDir: "src",
+  tslint: {
+    configuration: {
+      rules: {
+        "no-submodule-import": false,
+      },
+    },
+  },
 };
 
 const lib: buildTools.LibTarget = {
@@ -62,7 +70,7 @@ const example: buildTools.NodeTarget = {
   project,
   name: "example",
   srcDir: "src",
-  scripts: ["example/**/*.ts", "lib/**/*.ts"],
+  scripts: ["example/**/*.ts", "lib/**/*.ts", "native/**/*.ts"],
   tsconfigJson: "src/example/tsconfig.json",
   mainModule: "example/main",
   customTypingsDir: "src/custom-typings",
@@ -72,6 +80,7 @@ const example: buildTools.NodeTarget = {
   clean: {
     dirs: ["build/example", "dist/example"],
   },
+  copy: [{files: ["native/index.d.ts"]}],
 };
 
 const test: buildTools.MochaTarget = {
@@ -91,8 +100,19 @@ const test: buildTools.MochaTarget = {
 
 const libTasks: any = buildTools.registerLibTasks(gulp, lib);
 buildTools.registerMochaTasks(gulp, test);
-buildTools.registerNodeTasks(gulp, example);
+const exampleTasks: any = buildTools.registerNodeTasks(gulp, example);
 buildTools.projectTasks.registerAll(gulp, project);
+
+gulp.task("example:neon", function () {
+  const crateRoot: string = "."; // Crate root (with Cargo.toml) relative to project root
+  const neonProject: NeonProject = new NeonProject(project.root, {crate: crateRoot});
+  const outNodeFile: string = "build/example/native/index.node";
+  const neonCrate: NeonCrate = new NeonCrate(neonProject, {subdirectory: crateRoot, nodefile: outNodeFile});
+  (neonProject as any).crate = neonCrate;
+  return neonProject.build("stable", false, "undefined");
+});
+
+gulp.task("example:build-all", gulp.parallel("example:build", "example:neon"));
 
 gulp.task("tsconfig.json", gulp.parallel("lib:tsconfig.json", "test:tsconfig.json", "example:tsconfig.json"));
 gulp.task("dist", libTasks.dist);
