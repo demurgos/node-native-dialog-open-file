@@ -14,4 +14,8 @@ crate-type = ["dylib"]
 neon-build = "^0.1.22"
 
 [dependencies]
+cpp_utils = "^0.2.0"
+libc = "^0.2.33"
 neon = "^0.1.22"
+qt_core = "^0.2.3"
+qt_widgets = "^0.2.3"

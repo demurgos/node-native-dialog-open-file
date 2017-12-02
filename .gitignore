@@ -18,7 +18,6 @@
 /native/artifacts.json
 /target/
 /artifacts.json
-/src/native/index.node
 
 ###############################################################################
 # Dependencies                                                                #

@@ -109,7 +109,7 @@ gulp.task("example:neon", function () {
   const outNodeFile: string = "build/example/native/index.node";
   const neonCrate: NeonCrate = new NeonCrate(neonProject, {subdirectory: crateRoot, nodefile: outNodeFile});
   (neonProject as any).crate = neonCrate;
-  return neonProject.build("stable", false, "undefined");
+  return neonProject.build("stable", true, "undefined");
 });
 
 gulp.task("example:build-all", gulp.parallel("example:build", "example:neon"));
